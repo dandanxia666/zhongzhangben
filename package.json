@@ -1,0 +1,10 @@
+{
+  "name": "zhongzhangben",
+  "version": "1.0.0",
+  "description": "众账本 —— 小组织经费透明账本系统（Node.js 零依赖后端 + 前端单页）",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "main": "server.js"
+}
