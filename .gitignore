@@ -1,0 +1,12 @@
+# 依赖与系统文件
+node_modules/
+.DS_Store
+*.log
+
+# 运行时数据与凭证（含口令散列、账本业务数据，不入库；服务端首次启动会自动生成种子）
+users.json
+zzb-data.json
+zzb-data.json.tmp
+
+# 本地演示脚本（含示例口令，非运行必需）
+demo-hack.sh
