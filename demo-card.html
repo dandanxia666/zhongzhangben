@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>众账本 · 后端演示流程卡">
+<style>
+:root{--ink:#18181B;--ink2:#52525B;--acc:#7C3AED;--accsoft:#EDE9FE;--ok:#16A34A;--amber:#B45309;--ambersoft:#FEF3C7;--red:#DC2626;--line:#E4E4E7}
+*{box-sizing:border-box;margin:0}
+body{font-family:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--ink);font-size:13px;line-height:1.55;padding:24px;max-width:900px;margin:0 auto;background:#fff}
+h1{font-size:20px;margin-bottom:2px}
+.sub{color:var(--ink2);margin-bottom:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.box{border:1.5px solid var(--line);border-radius:10px;padding:12px 14px}
+.box h2{font-size:13px;margin-bottom:8px;color:var(--acc)}
+.box.url h2{color:var(--amber)}
+.box.sos h2{color:var(--red)}
+.kv{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px dashed var(--line);font-size:12px}
+.kv:last-child{border:none}
+.kv b{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--acc)}
+.ck{display:flex;gap:8px;align-items:flex-start;padding:4px 0;font-size:12.5px}
+.ck::before{content:"";width:13px;height:13px;border:1.5px solid var(--ink2);border-radius:3px;flex:none;margin-top:3px}
+.step{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);page-break-inside:avoid}
+.step:last-child{border:none}
+.no{width:38px;height:38px;border-radius:50%;background:var(--acc);color:#fff;font-size:17px;font-weight:800;display:grid;place-items:center}
+.step h3{font-size:14.5px;margin-bottom:4px}
+.step h3 .tag{font-size:11px;font-weight:600;color:var(--amber);background:var(--ambersoft);border-radius:99px;padding:1px 9px;margin-left:8px;vertical-align:2px}
+.row{display:flex;gap:6px;margin-top:3px}
+.row .lbl{flex:none;width:40px;font-size:11px;font-weight:700;border-radius:4px;padding:1px 6px;text-align:center;height:fit-content;margin-top:1px}
+.lbl.do{background:var(--accsoft);color:var(--acc)}
+.lbl.say{background:#DCFCE7;color:var(--ok)}
+.lbl.see{background:var(--ambersoft);color:var(--amber)}
+.row .txt{flex:1;font-size:12.5px}
+.row .txt b{font-family:ui-monospace,Menlo,monospace;font-size:11.5px}
+@media print{body{padding:6mm;font-size:11.5px}}
+</style>
+</head>
+<body>
+
+<h1>众账本 · 后端演示流程卡</h1>
+<p class="sub">总时长约 6 分钟 · 口令全部是 <b>123456</b> · 左浏览器右终端分屏</p>
+
+<div class="grid">
+  <div class="box url">
+    <h2>地址速查</h2>
+    <div class="kv"><span>电脑·后端(主演示)</span><b>http://127.0.0.1:8100</b></div>
+    <div class="kv"><span>手机(同 Wi-Fi)</span><b>http://10.153.207.237:8100</b></div>
+    <div class="kv"><span>旧版对照(备用)</span><b>http://127.0.0.1:8000/code.html</b></div>
+    <div class="kv"><span>重启服务器</span><b>cd …/zhongzhangben && node server.js</b></div>
+    <div class="kv"><span>手机打不开时查新 IP</span><b>ipconfig getifaddr en0</b></div>
+  </div>
+  <div class="box sos">
+    <h2>应急</h2>
+    <div class="ck">手机打不开 → 确认同一 Wi-Fi;还不行就手机开热点、电脑连热点,重查 IP</div>
+    <div class="ck">终端没在跑 → zhongzhangben 目录下执行 node server.js</div>
+    <div class="ck">账演示乱了 → 界面"数据 → 重置演示数据"(所有设备同步回种子)</div>
+  </div>
+</div>
+
+<div class="box" style="margin-bottom:6px">
+  <h2>演示前 5 分钟勾一遍</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 18px">
+    <div class="ck">手机开 <b>10.153.207.237:8100</b> 能看到登录页</div>
+    <div class="ck">电脑 Chrome 登录<b>张三</b>(选张三→口令 123456)</div>
+    <div class="ck">终端进入 zhongzhangben 目录,输好 <b>bash demo-hack.sh</b>(别回车)</div>
+    <div class="ck">Safari 备用(确认<b>从未</b>打开过 8100)</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="no">1</div>
+  <div>
+    <h3>终端开场</h3>
+    <div class="row"><span class="lbl do">做</span><span class="txt">指一下右侧终端窗口里滚动的请求日志</span></div>
+    <div class="row"><span class="lbl say">说</span><span class="txt">"右边是我的服务器,屏幕上每个操作它都会留下记录。"</span></div>
+    <div class="row"><span class="lbl see">看</span><span class="txt">终端持续滚出 <b>时间 方法 路径 → 200</b></span></div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="no">2</div>
+  <div>
+    <h3>手机跨设备登录<span class="tag">爆点①</span></h3>
+    <div class="row"><span class="lbl do">做</span><span class="txt">手机开 <b>10.153.207.237:8100</b> → 选李四 → 登录</span></div>
+    <div class="row"><span class="lbl say">说</span><span class="txt">"注意电脑左下角在线名单出现了李四——这是另一台设备。上一版协同只能在这台电脑开两个窗口,现在任何设备都是同一本账。"</span></div>
+    <div class="row"><span class="lbl see">看</span><span class="txt">电脑侧栏"● 在线:张三、李四";终端滚出 login 记录</span></div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="no">3</div>
+  <div>
+    <h3>跨设备实时协同</h3>
+    <div class="row"><span class="lbl do">做</span><span class="txt">电脑:制单 → 模板"义卖收入" → 金额 100 → 保存;手机:点提示 → <b>复核通过</b></span></div>
+    <div class="row"><span class="lbl say">说</span><span class="txt">"我这边刚记,李四手机上秒收到;他一复核,我这边状态立刻变绿。"</span></div>
+    <div class="row"><span class="lbl see">看</span><span class="txt">手机弹"张三 制单";电脑待复核角标 −1、凭证变绿</span></div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="no">4</div>
+  <div>
+    <h3>绕过界面攻击服务器<span class="tag">灵魂环节</span></h3>
+    <div class="row"><span class="lbl do">做</span><span class="txt">终端对着一整段命令按回车:<b>bash demo-hack.sh</b></span></div>
+    <div class="row"><span class="lbl say">说</span><span class="txt">"我完全不用界面,直接向服务器发假请求——匿名、越权、借贷不平,全部被服务器拒绝。规则不活在网页里,活在服务器里,界面只是视图。"</span></div>
+    <div class="row"><span class="lbl see">看</span><span class="txt">四行输出:①未登录被拒 ②只读成员被拒 ③借贷不平被拒 ④改对了才 <b>ok:true</b></span></div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="no">5</div>
+  <div>
+    <h3>换浏览器 = 同一本账<span class="tag">爆点②</span></h3>
+    <div class="row"><span class="lbl do">做</span><span class="txt">Safari 开 <b>127.0.0.1:8100</b> → 登录王五</span></div>
+    <div class="row"><span class="lbl say">说</span><span class="txt">"上一个从没打开过的浏览器,数据原样都在——上一版换个浏览器就是另一本账,因为数据锁在各浏览器的 localStorage 里;现在数据在服务器文件上。"</span></div>
+    <div class="row"><span class="lbl see">看</span><span class="txt">账本完整;王五导航里<b>没有</b>"制单"(只读权限)</span></div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="no">6</div>
+  <div>
+    <h3>重启服务器,账不丢<span class="tag">可选加分</span></h3>
+    <div class="row"><span class="lbl do">做</span><span class="txt">终端 <b>Ctrl+C</b> → 输 <b>node server.js</b> → 浏览器刷新</span></div>
+    <div class="row"><span class="lbl say">说</span><span class="txt">"进程死了账不死——每一笔都原子写入服务器文件。"</span></div>
+    <div class="row"><span class="lbl see">看</span><span class="txt">数据原样,重新登录后在线名单恢复</span></div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="no">7</div>
+  <div>
+    <h3>实时公示收尾</h3>
+    <div class="row"><span class="lbl do">做</span><span class="txt">手机打开公示链接(李四 → "公示"页复制);电脑再记一笔</span></div>
+    <div class="row"><span class="lbl say">说</span><span class="txt">"公开监督也是实时的。服务器执行规则、跨设备协同、数据落盘、对外透明——这就是从演示品走向产品的第一步。"</span></div>
+    <div class="row"><span class="lbl see">看</span><span class="txt">手机公示页<b>不刷新</b>自动出现新记录</span></div>
+  </div>
+</div>
+
+</body>
+</html>
