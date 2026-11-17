@@ -811,6 +811,19 @@ var META = null;        /* 未登录时从 /api/meta 拉取的组织与成员 */
 var evtSrc = null;      /* SSE 连接 */
 var PUB_DATA = null;    /* 公示页在服务端模式下的数据 */
 
+/* ---------- 发布平台网关鉴权:分享链接的 sharecode 必须随每个请求带上 ----------
+   本地单机运行时地址里没有 sharecode,apiUrl 会原样返回,不影响本地使用。 */
+var SHARECODE = (function(){
+  try {
+    var m = new RegExp('[?&]sharecode=([^&#]+)').exec(location.search || '');
+    return m ? decodeURIComponent(m[1]) : '';
+  } catch(e){ return ''; }
+})();
+function apiUrl(path){
+  if (!SHARECODE) return path;
+  return path + (path.indexOf('?') >= 0 ? '&' : '?') + 'sharecode=' + encodeURIComponent(SHARECODE);
+}
+
 /* 窗口级会话:单机模式每个窗口可登录不同身份;服务端模式按设备(localStorage)保持登录 */
 var memUid = null;
 var sess = {};
@@ -1692,7 +1705,12 @@ function apiFetch(path, opts){
     'Content-Type': 'application/json',
     'Authorization': 'Bearer ' + (API_TOKEN || '')
   });
-  return fetch('/api' + path, opts).then(function(r){
+  /* 网关会剥离 Authorization 头,token 同时以 query 参数传递作兼容 */
+  var url = apiUrl('/api' + path);
+  if (API_TOKEN){
+    url += (url.indexOf('?') >= 0 ? '&' : '?') + 'token=' + encodeURIComponent(API_TOKEN);
+  }
+  return fetch(url, opts).then(function(r){
     return r.json().then(function(j){ return { status: r.status, j: j }; });
   });
 }
@@ -1738,7 +1756,7 @@ function applyRemoteUpdate(m){
 function openEvents(){
   if (!SERVER_MODE || !API_TOKEN || typeof EventSource === 'undefined') return;
   if (evtSrc) evtSrc.close();
-  evtSrc = new EventSource('/api/events?token=' + encodeURIComponent(API_TOKEN));
+  evtSrc = new EventSource(apiUrl('/api/events?token=' + encodeURIComponent(API_TOKEN)));
   evtSrc.addEventListener('update', function(e){
     try { applyRemoteUpdate(JSON.parse(e.data)); } catch(err){}
   });
@@ -1766,7 +1784,7 @@ function boot(){
     }
   }
   try {
-    fetch('/api/ping').then(function(r){ return r.json(); })
+    fetch(apiUrl('/api/ping')).then(function(r){ return r.json(); })
       .then(function(j){ SERVER_MODE = !!(j && j.ok); })
       .catch(function(){ SERVER_MODE = false; })
       .then(done);
