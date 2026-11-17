@@ -56,14 +56,21 @@ function saveUsers(){ try { fs.writeFileSync(USERS, JSON.stringify(USERS_DB, nul
 var tokens = new Map(); /* token -> uid */
 function member(uid){ return S.members.filter(function(m){ return m.id === uid; })[0] || null; }
 function nameOf(uid){ var m = member(uid); return m ? m.name : '未知'; }
-function auth(req){
+function auth(req, urlObj){
+  var tok = null;
   var h = req.headers['authorization'] || '';
   var m = h.match(/^Bearer ([A-Za-z0-9]+)$/);
-  if (m && tokens.has(m[1])){
-    var uid = tokens.get(m[1]);
+  if (m) tok = m[1];
+  /* 发布平台网关会剥离 Authorization 头,兼容从 query 参数读取 token */
+  if (!tok && urlObj && urlObj.searchParams){
+    var qt = urlObj.searchParams.get('token');
+    if (qt && /^[A-Za-z0-9]+$/.test(qt)) tok = qt;
+  }
+  if (tok && tokens.has(tok)){
+    var uid = tokens.get(tok);
     var mm = member(uid);
-    if (mm) return { token: m[1], uid: uid, member: mm };
-    tokens.delete(m[1]);
+    if (mm) return { token: tok, uid: uid, member: mm };
+    tokens.delete(tok);
   }
   return null;
 }
@@ -112,7 +119,7 @@ function readBody(req, cb){
 function handleApi(req, res, urlObj, method){
   var p = urlObj.pathname;
   var needAuth = p !== '/api/ping' && p !== '/api/meta' && p !== '/api/login' && !/^\/api\/pub\//.test(p) && p !== '/api/events';
-  var a = auth(req);
+  var a = auth(req, urlObj);
   if (needAuth && !a) return json(res, 401, { ok: false, err: '未登录或登录已失效' });
 
   /* 公开 */
